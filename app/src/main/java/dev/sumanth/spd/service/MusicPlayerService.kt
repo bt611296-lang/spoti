@@ -18,7 +18,6 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.media.app.NotificationCompat.MediaStyle
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import dev.sumanth.spd.MainActivity
 import dev.sumanth.spd.R
 import org.json.JSONArray
@@ -193,7 +192,7 @@ class MusicPlayerService : Service() {
 
     private fun dispatchAction(action: String) {
         savePendingAction(this, action)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(
+        sendBroadcast(
             Intent(action).apply { setPackage(packageName) }
         )
     }
@@ -208,7 +207,7 @@ class MusicPlayerService : Service() {
         getSharedPreferences(PENDING_PREFS, Context.MODE_PRIVATE)
             .edit().putInt("pending_song_index", songIndex).apply()
 
-        LocalBroadcastManager.getInstance(this).sendBroadcast(
+        sendBroadcast(
             Intent(ACTION_PLAY_SONG_INDEX).apply {
                 setPackage(packageName)
                 putExtra(EXTRA_SONG_INDEX, songIndex)
@@ -236,7 +235,7 @@ class MusicPlayerService : Service() {
     }
 
     private fun playLocalSong(song: LocalPlaybackSong) {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(
+        sendBroadcast(
             Intent(ACTION_STOP_APP_PLAYER).apply { setPackage(packageName) }
         )
         releaseLocalPlayer()
@@ -360,7 +359,7 @@ class MusicPlayerService : Service() {
         songPos: Int = currentLocalIndex,
         songTotal: Int = localPlaybackList.size
     ) {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(
+        sendBroadcast(
             Intent(ACTION_UPDATE_NOTIFICATION).apply {
                 setPackage(packageName)
                 putExtra(EXTRA_IS_PLAYING, isPlaying)
