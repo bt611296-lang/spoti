@@ -16,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import dev.sumanth.spd.model.DownloadHistoryItem
 import dev.sumanth.spd.model.DownloadStatus
 import dev.sumanth.spd.model.LocalPlaybackItem
@@ -231,7 +230,7 @@ class HomeScreenViewModel(application: Application) : AndroidViewModel(applicati
             addAction(MusicPlayerService.ACTION_STOP_APP_PLAYER)
             addAction(MusicPlayerService.ACTION_UPDATE_NOTIFICATION)
         }
-        LocalBroadcastManager.getInstance(getApplication()).registerReceiver(notificationActionReceiver, filter)
+        getApplication<Application>().registerReceiver(notificationActionReceiver, filter)
     }
 
     private fun playLocalSongFromWidget(index: Int) {
@@ -1298,7 +1297,7 @@ class HomeScreenViewModel(application: Application) : AndroidViewModel(applicati
     override fun onCleared() {
         super.onCleared()
         try {
-            LocalBroadcastManager.getInstance(getApplication()).unregisterReceiver(notificationActionReceiver)
+            getApplication<Application>().unregisterReceiver(notificationActionReceiver)
         } catch (e: Exception) {
             e.printStackTrace()
         }

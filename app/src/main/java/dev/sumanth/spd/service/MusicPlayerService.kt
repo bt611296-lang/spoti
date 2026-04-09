@@ -193,7 +193,7 @@ class MusicPlayerService : Service() {
 
     private fun dispatchAction(action: String) {
         savePendingAction(this, action)
-        LocalBroadcastManager.getInstance(this).sendBroadcast(
+        sendBroadcast(
             Intent(action).apply { setPackage(packageName) }
         )
     }
@@ -236,7 +236,7 @@ class MusicPlayerService : Service() {
     }
 
     private fun playLocalSong(song: LocalPlaybackSong) {
-        LocalBroadcastManager.getInstance(this).sendBroadcast(
+        sendBroadcast(
             Intent(ACTION_STOP_APP_PLAYER).apply { setPackage(packageName) }
         )
         releaseLocalPlayer()
